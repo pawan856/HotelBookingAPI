@@ -1,6 +1,7 @@
 ﻿using HotelBookingAPI.DTOs.RoomTypeDTOs;
 using HotelBookingAPI.Models;
 using HotelBookingAPI.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -8,6 +9,7 @@ namespace HotelBookingAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize] // All endpoints require authentication
     public class RoomTypeController : ControllerBase
     {
         private readonly RoomTypeRepository _roomTypeRepository;
@@ -58,6 +60,7 @@ namespace HotelBookingAPI.Controllers
         }
 
         [HttpPost("AddRoomType")]
+        [Authorize(Roles = "Admin")] // Only Admin can create room types
         public async Task<APIResponse<CreateRoomTypeResponseDTO>> CreateRoomType([FromBody] CreateRoomTypeDTO request)
         {
             _logger.LogInformation("Request Received for CreateRoomType: {@CreateRoomTypeDTO}", request);
@@ -87,6 +90,7 @@ namespace HotelBookingAPI.Controllers
         }
 
         [HttpPut("Update/{RoomTypeId}")]
+        [Authorize(Roles = "Admin")] // Only Admin can update room types
         public async Task<APIResponse<UpdateRoomTypeResponseDTO>> UpdateRoomType(int RoomTypeId, [FromBody] UpdateRoomTypeDTO request)
         {
             _logger.LogInformation("Request Received for UpdateRoomType {@UpdateRoomTypeDTO}", request);
@@ -118,6 +122,7 @@ namespace HotelBookingAPI.Controllers
         }
 
         [HttpDelete("Delete/{RoomTypeId}")]
+        [Authorize(Roles = "Admin")] // Only Admin can delete room types
         public async Task<APIResponse<DeleteRoomTypeResponseDTO>> DeleteRoomType(int RoomTypeId)
         {
             _logger.LogInformation($"Request Received for DeleteRoomType, RoomTypeId: {RoomTypeId}");
@@ -144,6 +149,7 @@ namespace HotelBookingAPI.Controllers
         }
 
         [HttpPost("ActiveInActive")]
+        [Authorize(Roles = "Admin")] // Only Admin can toggle room type status
         public async Task<IActionResult> ToggleActive(int RoomTypeId, bool IsActive)
         {
             try

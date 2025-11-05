@@ -1,6 +1,7 @@
 ﻿using HotelBookingAPI.DTOs.UserDTOs;
 using HotelBookingAPI.Models;
 using HotelBookingAPI.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -8,6 +9,7 @@ namespace HotelBookingAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly UserRepository _userRepository;
@@ -19,8 +21,9 @@ namespace HotelBookingAPI.Controllers
             _logger = logger;
         }
 
-        [HttpPost("AddUser")]
-        public async Task<APIResponse<CreateUserResponseDTO>> AddUser(CreateUserDTO createUserDTO)
+    [HttpPost("AddUser")]
+    [AllowAnonymous]
+    public async Task<APIResponse<CreateUserResponseDTO>> AddUser(CreateUserDTO createUserDTO)
         {
             _logger.LogInformation("Request Received for AddUser: {@CreateUserDTO}", createUserDTO);
 
@@ -48,8 +51,9 @@ namespace HotelBookingAPI.Controllers
             }
         }
 
-        [HttpPost("AssignRole")]
-        public async Task<APIResponse<UserRoleResponseDTO>> AssignRole(UserRoleDTO userRoleDTO)
+    [HttpPost("AssignRole")]
+    [Authorize(Roles = "Admin")]
+    public async Task<APIResponse<UserRoleResponseDTO>> AssignRole(UserRoleDTO userRoleDTO)
         {
             _logger.LogInformation("Request Received for AssignRole: {@UserRoleDTO}", userRoleDTO);
 
@@ -77,8 +81,9 @@ namespace HotelBookingAPI.Controllers
             }
         }
 
-        [HttpGet("AllUsers")]
-        public async Task<APIResponse<List<UserResponseDTO>>> GetAllUsers(bool? isActive = null)
+    [HttpGet("AllUsers")]
+    [Authorize(Roles = "Admin")]
+    public async Task<APIResponse<List<UserResponseDTO>>> GetAllUsers(bool? isActive = null)
         {
             _logger.LogInformation($"Request Received for GetAllUsers, IsActive: {isActive}");
             try
@@ -93,8 +98,9 @@ namespace HotelBookingAPI.Controllers
             }
         }
 
-        [HttpGet("GetUser/{userId}")]
-        public async Task<APIResponse<UserResponseDTO>> GetUserById(int userId)
+    [HttpGet("GetUser/{userId}")]
+    [Authorize(Roles = "Admin")]
+    public async Task<APIResponse<UserResponseDTO>> GetUserById(int userId)
         {
             _logger.LogInformation($"Request Received for GetUserById, ID: {userId}");
             try
@@ -114,8 +120,9 @@ namespace HotelBookingAPI.Controllers
             }
         }
 
-        [HttpPut("Update/{id}")]
-        public async Task<APIResponse<UpdateUserResponseDTO>> UpdateUser(int id, [FromBody] UpdateUserDTO updateUserDTO)
+    [HttpPut("Update/{id}")]
+    [Authorize(Roles = "Admin")]
+    public async Task<APIResponse<UpdateUserResponseDTO>> UpdateUser(int id, [FromBody] UpdateUserDTO updateUserDTO)
         {
             _logger.LogInformation("Request Received for UpdateUser {@UpdateUserDTO}", updateUserDTO);
             if (!ModelState.IsValid)
@@ -145,8 +152,9 @@ namespace HotelBookingAPI.Controllers
             }
         }
 
-        [HttpDelete("Delete/{id}")]
-        public async Task<APIResponse<DeleteUserResponseDTO>> DeleteUser(int id)
+    [HttpDelete("Delete/{id}")]
+    [Authorize(Roles = "Admin")]
+    public async Task<APIResponse<DeleteUserResponseDTO>> DeleteUser(int id)
         {
             _logger.LogInformation($"Request Received for DeleteUser, Id: {id}");
             try
@@ -171,8 +179,9 @@ namespace HotelBookingAPI.Controllers
             }
         }
 
-        [HttpPost("Login")]
-        public async Task<APIResponse<LoginUserResponseDTO>> LoginUser([FromBody] LoginUserDTO loginUserDTO)
+    [HttpPost("Login")]
+    [AllowAnonymous]
+    public async Task<APIResponse<LoginUserResponseDTO>> LoginUser([FromBody] LoginUserDTO loginUserDTO)
         {
             _logger.LogInformation("Request Received for LoginUser {@LoginUserDTO}", loginUserDTO);
 

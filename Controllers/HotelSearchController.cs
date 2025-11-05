@@ -1,6 +1,7 @@
 ﻿using HotelBookingAPI.DTOs.HotelSearchDTOs;
 using HotelBookingAPI.Models;
 using HotelBookingAPI.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -8,6 +9,7 @@ namespace HotelBookingAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize] // All endpoints require authentication
     public class HotelSearchController : ControllerBase
     {
         private readonly HotelSearchRepository _hotelSearchRepository;

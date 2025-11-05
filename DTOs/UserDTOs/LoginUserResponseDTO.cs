@@ -5,5 +5,6 @@
         public int UserId { get; set; }
         public string Message { get; set; }
         public bool IsLogin { get; set; }
+        public string Token { get; set; } // JWT token
     }
 }

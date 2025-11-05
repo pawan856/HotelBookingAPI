@@ -10,5 +10,10 @@ namespace HotelBookingAPI.DTOs.UserDTOs
 
         [Required(ErrorMessage = "Password is Required")]
         public string Password { get; set; } // This should be converted to a hash before being sent to the database.
+
+        [Phone(ErrorMessage = "Invalid Phone Number")]
+        public string? PhoneNumber { get; set; }
+
+        public string? Role { get; set; } // Optional: defaults to "Guest" if not specified
     }
 }

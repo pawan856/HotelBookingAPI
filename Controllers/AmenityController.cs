@@ -1,6 +1,7 @@
 ﻿using HotelBookingAPI.DTOs.AmenityDTOs;
 using HotelBookingAPI.Models;
 using HotelBookingAPI.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -8,6 +9,7 @@ namespace HotelBookingAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize] // All endpoints require authentication
     public class AmenityController : ControllerBase
     {
         private readonly AmenityRepository _amenityRepository;
@@ -60,6 +62,7 @@ namespace HotelBookingAPI.Controllers
         }
 
         [HttpPost("Add")]
+        [Authorize(Roles = "Admin")] // Only Admin can add amenities
         public async Task<APIResponse<AmenityInsertResponseDTO>> AddAmenity([FromBody] AmenityInsertDTO amenity)
         {
             try
@@ -84,6 +87,7 @@ namespace HotelBookingAPI.Controllers
         }
 
         [HttpPut("Update/{id}")]
+        [Authorize(Roles = "Admin")] // Only Admin can update amenities
         public async Task<APIResponse<AmenityUpdateResponseDTO>> UpdateAmenity(int id, [FromBody] AmenityUpdateDTO amenity)
         {
             try
@@ -114,6 +118,7 @@ namespace HotelBookingAPI.Controllers
         }
 
         [HttpDelete("Delete/{id}")]
+        [Authorize(Roles = "Admin")] // Only Admin can delete amenities
         public async Task<APIResponse<AmenityDeleteResponseDTO>> DeleteAmenity(int id)
         {
             try
@@ -139,6 +144,7 @@ namespace HotelBookingAPI.Controllers
         }
 
         [HttpPost("BulkInsert")]
+        [Authorize(Roles = "Admin")] // Only Admin can bulk insert amenities
         public async Task<APIResponse<AmenityBulkOperationResultDTO>> BulkInsertAmenities(List<AmenityInsertDTO> amenities)
         {
             try
@@ -159,6 +165,7 @@ namespace HotelBookingAPI.Controllers
         }
 
         [HttpPost("BulkUpdate")]
+        [Authorize(Roles = "Admin")] // Only Admin can bulk update amenities
         public async Task<APIResponse<AmenityBulkOperationResultDTO>> BulkUpdateAmenities(List<AmenityUpdateDTO> amenities)
         {
             try
@@ -184,6 +191,7 @@ namespace HotelBookingAPI.Controllers
         }
 
         [HttpPut("BulkUpdateStatus")]
+        [Authorize(Roles = "Admin")] // Only Admin can bulk update amenity status
         public async Task<APIResponse<AmenityBulkOperationResultDTO>> BulkUpdateAmenityStatus(List<AmenityStatusDTO> amenityStatuses)
         {
             try

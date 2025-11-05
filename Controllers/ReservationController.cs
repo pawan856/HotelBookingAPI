@@ -2,6 +2,7 @@
 using HotelBookingAPI.DTOs.PaymentDTOs;
 using HotelBookingAPI.Models;
 using HotelBookingAPI.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -9,6 +10,7 @@ namespace HotelBookingAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize] // All endpoints require authentication
     public class ReservationController : ControllerBase
     {
         private readonly ReservationRepository _reservationRepository;

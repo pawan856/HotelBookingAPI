@@ -1,6 +1,7 @@
 ﻿using HotelBookingAPI.DTOs.RoomDTOs;
 using HotelBookingAPI.Models;
 using HotelBookingAPI.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -8,6 +9,7 @@ namespace HotelBookingAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize] // All endpoints require authentication
     public class RoomController : ControllerBase
     {
         private readonly RoomRepository _roomRepository;
@@ -64,6 +66,7 @@ namespace HotelBookingAPI.Controllers
         }
 
         [HttpPost("Create")]
+        [Authorize(Roles = "Admin")] // Only Admin can create rooms
         public async Task<APIResponse<CreateRoomResponseDTO>> CreateRoom([FromBody] CreateRoomRequestDTO request)
         {
             _logger.LogInformation("Request Received for CreateRoom: {@CreateRoomRequestDTO}", request);
@@ -94,6 +97,7 @@ namespace HotelBookingAPI.Controllers
         }
 
         [HttpPut("Update/{id}")]
+        [Authorize(Roles = "Admin")] // Only Admin can update rooms
         public async Task<APIResponse<UpdateRoomResponseDTO>> UpdateRoom(int id, [FromBody] UpdateRoomRequestDTO request)
         {
             _logger.LogInformation("Request Received for UpdateRoom {@UpdateRoomRequestDTO}", request);
@@ -125,6 +129,7 @@ namespace HotelBookingAPI.Controllers
         }
 
         [HttpDelete("Delete/{id}")]
+        [Authorize(Roles = "Admin")] // Only Admin can delete rooms
         public async Task<APIResponse<DeleteRoomResponseDTO>> DeleteRoom(int id)
         {
             _logger.LogInformation($"Request Received for DeleteRoom, id: {id}");
